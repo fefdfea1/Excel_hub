@@ -1,0 +1,11 @@
+# 텍스트 파일은 저장소에 LF로 담고, 체크아웃할 때 OS에 맞춥니다.
+* text=auto eol=lf
+
+# 아래는 그대로 두어야 하는 이진 파일입니다.
+*.xlsx  binary
+*.xlsm  binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.woff2 binary

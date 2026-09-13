@@ -1,0 +1,111 @@
+/* ==========================================================================
+   디자인 토큰
+   색이나 여백을 바꾸고 싶으면 여기 값만 고치면 사이트 전체에 반영됩니다.
+   ========================================================================== */
+:root {
+  --paper: #f4efe6;
+  --sheet: #fffdf8;
+  --footer: #efe8db;
+  --line: #e3dbcd;
+  --line-strong: #d6c9b4;
+  --ink: #2b2622;
+  --body: #5d554e;
+  --muted: #7a716a;
+  --accent: #b5533c;
+  --accent-dark: #9a4531;
+  --tag: #f1eadf;
+
+  --max-width: 1120px;
+  --gutter: 24px;
+  --card-min: 280px;
+  --radius: 10px;
+
+  --font-sans: var(--font-pretendard), -apple-system, BlinkMacSystemFont,
+    'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  text-wrap: pretty;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-dark);
+}
+
+button {
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+p {
+  margin: 0;
+}
+
+/* 화면에는 안 보이지만 스크린 리더에는 읽히는 텍스트 */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 720px) {
+  :root {
+    --card-min: 240px;
+    --gutter: 18px;
+  }
+}
+
+@media (max-width: 420px) {
+  :root {
+    --card-min: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

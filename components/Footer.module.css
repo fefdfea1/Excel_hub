@@ -1,0 +1,34 @@
+.footer {
+  border-top: 1px solid var(--line);
+  background: var(--footer);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-block: 44px 40px;
+}
+
+.feedback {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.heading {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.hint {
+  max-width: 640px;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+.colophon {
+  font-size: 12.5px;
+  color: var(--muted);
+}

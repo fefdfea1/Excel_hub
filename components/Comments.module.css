@@ -1,0 +1,21 @@
+.thread {
+  min-height: 60px;
+  margin-top: 6px;
+}
+
+.note {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--muted);
+  background: var(--sheet);
+  border: 1px dashed var(--line-strong);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.note code {
+  font-size: 12.5px;
+  background: var(--tag);
+  border-radius: 4px;
+  padding: 1px 5px;
+}

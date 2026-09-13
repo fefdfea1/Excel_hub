@@ -1,0 +1,21 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-start;
+  padding-block: 96px 120px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.text {
+  font-size: 15.5px;
+  color: var(--body);
+}
+
+.link {
+  font-size: 14px;
+}
