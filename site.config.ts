@@ -32,7 +32,7 @@ export const site = {
      * 댓글 스레드 식별자. 사이트 전체가 이 스레드 하나를 같이 씁니다.
      * 한 번 정하면 바꾸지 마세요. 바꾸면 기존 댓글이 사라진 것처럼 보입니다.
      */
-    identifier: 'excel-templates-global',
+    identifier: 'excelhub-global-v2',
 
     /** 댓글 영역 제목과 안내 문구 */
     heading: '문제점 · 개선사항 · 추가요청',
