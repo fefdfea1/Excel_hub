@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { Analytics } from '@vercel/analytics/next';
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -44,6 +45,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className={styles.main}>{children}</main>
           <Footer />
         </div>
+        {/* Vercel 방문 통계. Vercel에 배포했을 때만 동작하고, 그 외에는 아무 일도 하지 않습니다. */}
+        <Analytics />
       </body>
     </html>
   );
