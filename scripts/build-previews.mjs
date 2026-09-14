@@ -124,9 +124,9 @@ function cellText(cell, cached) {
   }
 
   if (typeof value === 'number') lastValueWasNumeric = true;
-  if (value instanceof Date) {
-    return formatDate(new Date(value.getTime() + value.getTimezoneOffset() * 60000));
-  }
+  // 엑셀의 날짜는 시간대가 없는 값이고, 여기서는 UTC 자정으로 올라옵니다.
+  // formatDate 도 UTC 기준으로 읽으므로 시간대를 보정하면 오히려 하루가 밀립니다.
+  if (value instanceof Date) return formatDate(value);
   if (typeof value === 'number') return formatNumber(value, cell.numFmt);
   if (typeof value === 'boolean') return value ? 'TRUE' : 'FALSE';
   return String(value).replace(/\r?\n/g, ' ');
