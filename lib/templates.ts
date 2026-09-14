@@ -66,12 +66,16 @@ export type Template = {
   previews: Preview[];
   /** 카드 썸네일 경로 */
   cover: string;
+  /** 썸네일의 가로·세로. 공유 카드에 같이 넘깁니다. PNG 가 아니면 null 입니다. */
+  coverSize: { width: number; height: number } | null;
   /** 다운로드 경로. 폴더에 엑셀 파일이 없으면 null */
   file: string | null;
   /** 사용자가 받게 될 파일 이름 */
   downloadName: string | null;
   /** 파일 확장자 (.xlsx 등). 다운로드 버튼에 표시합니다. */
   fileExt: string | null;
+  /** 폴더 안에서 가장 최근에 고친 시각 (ISO). 사이트맵의 수정일로 나갑니다. */
+  updated: string;
 };
 
 /** "07_재고관리_입출고_안전재고" -> { order: 7, rest: "재고관리_입출고_안전재고" } */
@@ -148,6 +152,56 @@ function pickCover(meta: TemplateMeta, previews: Preview[], explicit: string | n
   return previews[0].src;
 }
 
+/**
+ * 폴더 안에서 가장 최근에 고친 시각. 엑셀 파일이나 meta.json 을 바꾸면 같이 바뀝니다.
+ * 사이트맵의 <lastmod> 로 나가서, 검색 엔진이 다시 훑을 때 참고합니다.
+ */
+function lastModified(dir: string): Date {
+  let newest = 0;
+
+  const visit = (target: string) => {
+    let stat;
+    try {
+      stat = fs.statSync(target);
+    } catch {
+      return;
+    }
+    newest = Math.max(newest, stat.mtimeMs);
+    if (stat.isDirectory()) {
+      for (const name of fs.readdirSync(target)) visit(path.join(target, name));
+    }
+  };
+
+  visit(dir);
+  return new Date(newest || Date.now());
+}
+
+/**
+ * PNG 앞부분(IHDR)에서 가로·세로를 읽습니다.
+ * 공유 카드에 크기를 같이 알려주면 카카오톡·페이스북에서 미리보기가 더 빨리 뜹니다.
+ */
+function imageSize(file: string): { width: number; height: number } | null {
+  try {
+    const head = Buffer.alloc(24);
+    const fd = fs.openSync(file, 'r');
+    try {
+      fs.readSync(fd, head, 0, 24, 0);
+    } finally {
+      fs.closeSync(fd);
+    }
+    if (head.subarray(0, 8).toString('hex') !== '89504e470d0a1a0a') return null;
+    return { width: head.readUInt32BE(16), height: head.readUInt32BE(20) };
+  } catch {
+    return null;
+  }
+}
+
+/** "/templates/어느폴더/previews/01-사용안내.png" -> 실제 파일 경로 */
+function fileOf(url: string): string {
+  const parts = url.split('/').filter(Boolean).map(decodeURIComponent);
+  return path.join(process.cwd(), 'public', ...parts);
+}
+
 function findDownload(dir: string): string | null {
   const files = fs
     .readdirSync(dir, { withFileTypes: true })
@@ -190,6 +244,7 @@ function buildTemplate(dirname: string): Template | null {
 
   const previews = readPreviews(dir, urlBase);
   const downloadName = findDownload(dir);
+  const cover = pickCover(meta, previews, findCoverImage(dir, urlBase));
 
   return {
     slug,
@@ -199,10 +254,12 @@ function buildTemplate(dirname: string): Template | null {
     tags: meta.tags ?? [],
     steps: meta.steps ?? [],
     previews,
-    cover: pickCover(meta, previews, findCoverImage(dir, urlBase)),
+    cover,
+    coverSize: cover ? imageSize(fileOf(cover)) : null,
     file: downloadName ? `${urlBase}/${encodeURIComponent(downloadName)}` : null,
     downloadName,
     fileExt: downloadName ? path.extname(downloadName).toLowerCase() : null,
+    updated: lastModified(dir).toISOString(),
   };
 }
 

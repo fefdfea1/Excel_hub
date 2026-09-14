@@ -21,7 +21,7 @@ export default function TemplateCard({ template }: { template: Template }) {
 
       <div className={styles.meta}>
         <div className={styles.row}>
-          <h3 className={styles.title}>{template.title}</h3>
+          <h2 className={styles.title}>{template.title}</h2>
           {template.previews.length > 0 && (
             <span className={styles.sheets}>시트 {template.previews.length}</span>
           )}

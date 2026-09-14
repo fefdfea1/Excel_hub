@@ -29,6 +29,9 @@ npm run dev       # 개발 서버 → http://localhost:3000
 │  ├─ layout.tsx               모든 페이지를 감싸는 껍데기 (헤더·푸터·글꼴)
 │  ├─ page.tsx                 목록 페이지  (/)
 │  ├─ not-found.tsx            404 페이지
+│  ├─ sitemap.ts               /sitemap.xml 을 만듭니다 (템플릿 목록 자동 반영)
+│  ├─ robots.ts                /robots.txt 를 만듭니다
+│  ├─ icon.svg                 브라우저 탭 아이콘
 │  ├─ globals.css              색·여백 등 디자인 토큰
 │  ├─ fonts/                   본문 글꼴 (Pretendard)
 │  └─ t/[slug]/page.tsx        템플릿 상세 페이지  (/t/inventory/)
@@ -39,6 +42,7 @@ npm run dev       # 개발 서버 → http://localhost:3000
 │  ├─ Comments.tsx             Disqus 댓글
 │  ├─ TemplateCard.tsx         목록의 카드 한 장
 │  ├─ SheetViewer.tsx          상세 페이지의 시트 넘겨보기
+│  ├─ JsonLd.tsx               검색 엔진용 구조화 데이터 (화면에는 안 보임)
 │  └─ Container.tsx            가운데 정렬용 껍데기
 │
 ├─ lib/
@@ -47,9 +51,11 @@ npm run dev       # 개발 서버 → http://localhost:3000
 ├─ scripts/
 │  ├─ build-previews.mjs       엑셀 → 미리보기 이미지 자동 생성
 │  ├─ render.mjs               시트를 그리는 코드
-│  └─ cached.mjs               엑셀에 저장된 수식 계산 결과 읽기
+│  ├─ cached.mjs               엑셀에 저장된 수식 계산 결과 읽기
+│  └─ build-og.mjs             공유 카드 이미지(og.png) 생성
 │
 ├─ public/
+│  ├─ og.png                            공유 카드 이미지 (npm run og 로 생성)
 │  └─ templates/                        ★ 콘텐츠는 전부 여기 있습니다
 │     └─ 07_재고관리_입출고_안전재고/      폴더 하나가 템플릿 하나 (폴더 이름 = 제목)
 │        ├─ meta.json                   설명·태그·표지·사용 순서
@@ -235,7 +241,10 @@ public/templates/07_재고관리_입출고_안전재고/previews/cover.jpg ← �
 |---|---|
 | `name` | 브라우저 탭과 헤더에 나오는 이름 |
 | `headline` / `tagline` | 목록 페이지 맨 위 문구 |
+| `titleDefault` | 검색 결과 첫 줄에 나오는 제목 (30자 안팎) |
 | `description` | 검색 결과·공유 카드 설명 |
+| `keywords` | 검색 엔진에 주는 낱말 힌트. 열 개 안쪽으로 |
+| `ogImage` | 카카오톡·페이스북에 뜨는 이미지 경로 |
 | `url` | **배포한 실제 주소.** 공유 카드가 제대로 나오려면 꼭 바꿔주세요 |
 | `colophon` | 맨 아래 한 줄 |
 | `autoplaySeconds` | 상세 페이지 미리보기 자동 넘김 간격(초). `0` 이면 끔 |
@@ -307,7 +316,51 @@ npx serve out
 
 ---
 
-## 9. 자주 겪는 문제
+## 9. 검색 노출 (SEO)
+
+건드릴 것 없이 빌드하면 아래가 자동으로 만들어집니다.
+
+| 만들어지는 것 | 하는 일 |
+|---|---|
+| `/sitemap.xml` | 목록과 템플릿 페이지 주소를 검색 엔진에 한 번에 알려줍니다. 템플릿을 넣고 빼면 자동으로 따라옵니다 |
+| `/robots.txt` | 모든 검색 로봇을 허용하고 사이트맵 위치를 알려줍니다 |
+| 페이지별 제목·설명 | 상세 페이지 제목은 "재고관리 입출고 안전재고 엑셀 양식 무료 다운로드" 처럼 만들어집니다. 설명은 `meta.json` 의 `desc` 를 씁니다 |
+| 대표 주소(canonical) | 같은 내용이 여러 주소로 잡히는 것을 막습니다 |
+| 공유 카드 | 카카오톡·페이스북에 붙였을 때 제목·설명·이미지가 나옵니다 |
+| 구조화 데이터 | "무료로 받을 수 있는 엑셀 서식"이라는 것과 목록 → 템플릿 경로를 기계가 읽는 형식으로 넘깁니다 |
+
+**검색에 잘 나오게 하려면 이것만 해주세요.**
+
+1. `site.config.ts` 의 `url` 이 실제 배포 주소인지 확인합니다. 이 주소가 모든 검색 정보의 기준이 됩니다.
+2. [구글 서치 콘솔](https://search.google.com/search-console) 과
+   [네이버 서치어드바이저](https://searchadvisor.naver.com) 에 사이트를 등록하고,
+   사이트맵 주소(`주소/sitemap.xml`)를 한 번 제출합니다.
+3. 소유 확인용 코드를 받으면 `app/layout.tsx` 의 `metadata` 에 아래처럼 넣습니다.
+
+   ```ts
+   verification: {
+     google: '구글에서 받은 코드',
+     other: { 'naver-site-verification': '네이버에서 받은 코드' },
+   },
+   ```
+
+**검색 결과에 잘 걸리는 `meta.json` 쓰는 법**
+
+- `desc` 는 그 서식으로 무엇을 하는지 한두 문장으로 씁니다. 이 문장이 검색 결과의 설명으로 그대로 나갑니다.
+- `tags` 에는 사람들이 실제로 검색할 만한 말을 넣습니다. (`재고`, `제조`, `건설` 처럼)
+- 폴더 이름이 곧 제목이므로, 폴더 이름에 찾기 쉬운 말을 넣는 것이 가장 효과가 큽니다.
+
+사이트 이름이나 템플릿 개수를 바꾼 뒤에는 공유 카드 이미지를 다시 만들어 주세요.
+
+```bash
+npm run og        # public/og.png 를 다시 그립니다
+```
+
+직접 그린 1200×630 이미지를 `public/og.png` 에 덮어써도 됩니다.
+
+---
+
+## 10. 자주 겪는 문제
 
 **미리보기 이미지가 안 나와요**
 `npm run previews` 를 실행했는지 확인하세요. 이미 이미지가 있으면 건너뛰므로,
@@ -340,6 +393,6 @@ Disqus가 확인할 수 없는 주소(localhost 등)로 스레드가 만들어�
 
 ---
 
-## 10. 키보드
+## 11. 키보드
 
 상세 페이지에서 `←` `→` 키로 시트를 넘길 수 있습니다.

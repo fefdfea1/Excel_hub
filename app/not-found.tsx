@@ -1,7 +1,15 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import Container from '@/components/Container';
 import styles from './not-found.module.css';
+
+// 없는 주소가 검색 결과에 올라가지 않게 합니다.
+export const metadata: Metadata = {
+  title: '페이지를 찾을 수 없습니다',
+  robots: { index: false, follow: true },
+  alternates: { canonical: null },
+};
 
 export default function NotFound() {
   return (

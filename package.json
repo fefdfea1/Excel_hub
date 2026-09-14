@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "previews": "node scripts/build-previews.mjs"
+    "previews": "node scripts/build-previews.mjs",
+    "og": "node scripts/build-og.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
