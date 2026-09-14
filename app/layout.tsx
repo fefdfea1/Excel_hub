@@ -63,6 +63,7 @@ export const metadata: Metadata = {
   // 검색 엔진에 사이트 소유자임을 확인시켜 주는 코드입니다.
   // 네이버 서치어드바이저 · 구글 서치 콘솔에서 받아 여기에 넣습니다.
   verification: {
+    google: 'hgeEVhgFla3dW-QDb4lHz3RNes4Y8NyuC4Udi8cP1D8',
     other: { 'naver-site-verification': 'b505038f446268d0f4e70a64c14de3bb2641b6fe' },
   },
   // 전화번호처럼 보이는 숫자를 모바일 브라우저가 멋대로 링크로 바꾸지 않게 합니다.
