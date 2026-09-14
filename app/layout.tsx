@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/next';
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { site } from '@/site.config';
 import { getTemplates } from '@/lib/templates';
 
@@ -83,6 +84,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
         {/* Vercel 방문 통계. Vercel에 배포했을 때만 동작하고, 그 외에는 아무 일도 하지 않습니다. */}
         <Analytics />
+        {/* 구글 애널리틱스. site.config.ts 에 측정 ID 를 넣어야 동작합니다. */}
+        <GoogleAnalytics />
       </body>
     </html>
   );

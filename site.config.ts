@@ -50,6 +50,16 @@ export const site = {
   /** 맨 아래 한 줄 */
   colophon: '엑셀 템플릿 · 무료로 사용하실 수 있습니다.',
 
+  /**
+   * 구글 애널리틱스 측정 ID. analytics.google.com 에서 만들면 받습니다.
+   * `G-` 로 시작하는 열 자리 남짓한 코드입니다.
+   *
+   * 채워 넣으면 어떤 템플릿을 몇 번 받아 갔는지 집계됩니다.
+   * 숫자는 애널리틱스 화면에서만 보이고, 이 사이트에는 나오지 않습니다.
+   * 비워두면 애널리틱스를 아예 넣지 않습니다.
+   */
+  googleAnalyticsId: 'G-SPMKHS4YZ4' as string,
+
   comments: {
     /**
      * disqus.com 에서 사이트를 등록하면 받는 고유 이름.
