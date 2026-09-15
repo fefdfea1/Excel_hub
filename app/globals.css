@@ -17,6 +17,8 @@
 
   --max-width: 1120px;
   --gutter: 24px;
+  /* 본문과 양옆 광고 사이 틈 */
+  --ad-gap: 24px;
   --card-min: 280px;
   --radius: 10px;
 

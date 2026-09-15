@@ -1,0 +1,63 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  /* 본문 마지막 요소와 붙지 않게, 그렇다고 눈에 띄게 벌어지지도 않게 */
+  padding-block: 28px 8px;
+}
+
+.label {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+/*
+  크기를 화면 폭별로 못박습니다. 광고가 제멋대로 커져서 본문을 밀어내는 일이
+  없고, 자리를 미리 잡아두므로 광고가 뜨는 순간 화면이 덜컥 밀리지도 않습니다.
+*/
+.unit {
+  display: inline-block;
+  width: 300px;
+  height: 50px;
+}
+
+@media (min-width: 360px) {
+  .unit {
+    width: 320px;
+  }
+}
+
+@media (min-width: 520px) {
+  .unit {
+    width: 468px;
+    height: 60px;
+  }
+}
+
+@media (min-width: 800px) {
+  .unit {
+    width: 728px;
+    height: 90px;
+  }
+}
+
+/* 광고 단위 ID 가 없을 때 개발 화면에서만 보이는 자리 표시입니다. */
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--tag);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.size {
+  font-size: 10px;
+  letter-spacing: 0.03em;
+}

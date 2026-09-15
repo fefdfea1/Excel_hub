@@ -5,6 +5,8 @@ import { Analytics } from '@vercel/analytics/next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
+import SideAds from '@/components/SideAds';
+import BottomAd from '@/components/BottomAd';
 import { site } from '@/site.config';
 import { getTemplates } from '@/lib/templates';
 
@@ -67,6 +69,9 @@ export const metadata: Metadata = {
     google: 'hgeEVhgFla3dW-QDb4lHz3RNes4Y8NyuC4Udi8cP1D8',
     other: { 'naver-site-verification': 'b505038f446268d0f4e70a64c14de3bb2641b6fe' },
   },
+  // 애드센스에 이 사이트가 어느 계정 것인지 알려주는 표시입니다.
+  // 심사를 넣을 때 구글이 이 태그를 찾습니다.
+  other: site.adsense.client ? { 'google-adsense-account': site.adsense.client } : {},
   // 전화번호처럼 보이는 숫자를 모바일 브라우저가 멋대로 링크로 바꾸지 않게 합니다.
   formatDetection: { telephone: false, email: false, address: false },
 };
@@ -76,12 +81,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="ko" className={pretendard.variable}>
+      <head>
+        {/* 구글 애드센스. 사이트 소유 확인과 광고 게재에 쓰입니다. */}
+        {site.adsense.client ? (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${site.adsense.client}`}
+            crossOrigin="anonymous"
+          />
+        ) : null}
+      </head>
       <body>
         <div className={styles.shell}>
           <Header count={count} />
           <main className={styles.main}>{children}</main>
+          {/* 푸터 바로 위 가로 배너. 좁은 화면에서도 나옵니다. */}
+          <BottomAd />
           <Footer />
         </div>
+        {/* 본문 양옆 광고. 화면이 넓고 광고 단위 ID 를 넣었을 때만 나옵니다. */}
+        <SideAds />
         {/* Vercel 방문 통계. Vercel에 배포했을 때만 동작하고, 그 외에는 아무 일도 하지 않습니다. */}
         <Analytics />
         {/* 구글 애널리틱스. site.config.ts 에 측정 ID 를 넣어야 동작합니다. */}

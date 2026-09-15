@@ -60,6 +60,29 @@ export const site = {
    */
   googleAnalyticsId: 'G-SPMKHS4YZ4' as string,
 
+  /**
+   * 구글 애드센스.
+   *
+   * `client` 는 애드센스 계정 하나에 하나뿐인 게시자 ID 입니다. 이 값이
+   * 비어 있으면 광고 스크립트를 아예 넣지 않습니다.
+   *
+   * `sideSlots` 는 본문 양옆에 세울 광고 단위 ID 입니다. 애드센스에서
+   * '디스플레이 광고' 단위를 좌·우용으로 하나씩 만들면 열 자리 남짓한
+   * 숫자를 받는데, 그것을 적으면 됩니다. 비워두면 그쪽에는 광고가
+   * 나오지 않고, 화면이 좁을 때도 나오지 않습니다.
+   *
+   * `bottomSlot` 은 본문 맨 아래 가로 배너입니다. 좁은 화면에서도 나오므로
+   * 휴대폰으로 들어온 사람에게 보이는 것은 이 자리 하나입니다.
+   */
+  adsense: {
+    client: 'ca-pub-4703835297829017' as string,
+    sideSlots: {
+      left: '' as string,
+      right: '' as string,
+    },
+    bottomSlot: '' as string,
+  },
+
   comments: {
     /**
      * disqus.com 에서 사이트를 등록하면 받는 고유 이름.

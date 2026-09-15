@@ -1,0 +1,45 @@
+/*
+  본문(--max-width) 바깥 여백에 광고를 세워 둡니다.
+  본문 왼쪽 끝은 화면 한가운데에서 본문 폭의 절반만큼 왼쪽이므로,
+  거기서 광고 폭과 틈만큼 더 바깥으로 밀어 붙입니다.
+*/
+.rail {
+  position: fixed;
+  top: 50%;
+  width: 160px;
+  height: 600px;
+  transform: translateY(-50%);
+}
+
+.left {
+  right: calc(50% + var(--max-width) / 2 + var(--ad-gap));
+}
+
+.right {
+  left: calc(50% + var(--max-width) / 2 + var(--ad-gap));
+}
+
+.unit {
+  display: inline-block;
+  width: 160px;
+  height: 600px;
+}
+
+/* 광고 단위 ID 가 없을 때 개발 화면에서만 보이는 자리 표시입니다. */
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--tag);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.size {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
